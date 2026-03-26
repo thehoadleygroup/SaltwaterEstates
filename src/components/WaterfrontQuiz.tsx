@@ -360,7 +360,7 @@ function Step1({
       <p className="text-cream/50 text-xs tracking-widest uppercase mb-4 font-mono">
         Do you currently own a vessel?
       </p>
-      <div className="grid grid-cols-3 gap-3 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
         {(
           [
             { id: "yes", label: "Yes, I own one" },
@@ -383,7 +383,7 @@ function Step1({
           <p className="text-cream/50 text-xs tracking-widest uppercase mb-4 font-mono">
             Vessel type
           </p>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {VESSEL_TYPES.map((vt) => (
               <ChoiceCard
                 key={vt.id}
@@ -531,7 +531,7 @@ function Step3({
       <p className="text-cream/50 text-xs tracking-widest uppercase mb-4 font-mono">
         Fixed bridge tolerance
       </p>
-      <div className="grid grid-cols-3 gap-3 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
         {(
           [
             { id: "no", label: "No fixed bridges" },
@@ -591,7 +591,7 @@ function Step4({
       <p className="text-cream/50 text-xs tracking-widest uppercase mb-4 font-mono">
         On-property dock required?
       </p>
-      <div className="grid grid-cols-3 gap-3 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
         {(
           [
             { id: true, label: "Required" },
@@ -612,7 +612,7 @@ function Step4({
       <p className="text-cream/50 text-xs tracking-widest uppercase mb-3 font-mono">
         Dockage features needed
       </p>
-      <div className="grid grid-cols-2 gap-3 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
         <ChoiceCard
           selected={data.dockCovered}
           onClick={() => set("dockCovered", !data.dockCovered)}
@@ -669,7 +669,7 @@ function Step5({
       <p className="text-cream/50 text-xs tracking-widest uppercase mb-4 font-mono">
         Select all that apply
       </p>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {LIFESTYLE_TYPES.map((lt) => (
           <ChoiceCard
             key={lt.id}
@@ -850,7 +850,7 @@ function Step7({
         subtitle="A Barefoot Realty advisor will reach out with a curated shortlist matched to your exact criteria."
       />
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           label="First Name"
           value={data.firstName}
@@ -927,20 +927,10 @@ export default function WaterfrontQuiz({ onComplete }: WaterfrontQuizProps) {
 
   return (
     <div
-      className="min-h-screen bg-onyx flex items-center justify-center px-4 py-16"
-      style={{ backgroundColor: "#0a0a0a", color: "#f0e6d0" }}
+      className="w-full px-1 py-4"
+      style={{ color: "#f0e6d0" }}
     >
-      <div className="w-full max-w-2xl">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <p className="text-gold text-xs tracking-[0.4em] uppercase font-mono mb-3">
-            Barefoot Realty &amp; Investments
-          </p>
-          <h1 className="text-4xl font-serif text-cream">
-            Find Your Waterfront Home
-          </h1>
-        </div>
-
+      <div className="w-full max-w-2xl mx-auto">
         {!submitted && <ProgressBar step={step} />}
 
         {/* Steps */}
