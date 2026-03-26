@@ -79,6 +79,15 @@ export default function FindYourDockLanding() {
       style={{ backgroundColor: "#0a0a0a", color: "#f0e6d0", minHeight: "100vh" }}
       className="font-sans"
     >
+      {/* ── SKIP TO CONTENT (ADA) ────────────────────────────────────────── */}
+      <a
+        href="#quiz-section"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:text-sm"
+        style={{ background: "#c9a96e", color: "#0a0a0a" }}
+      >
+        Skip to quiz
+      </a>
+
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative flex flex-col items-center justify-center min-h-screen px-5 py-20 text-center overflow-hidden">
         {/* Subtle background gradient */}
@@ -131,12 +140,14 @@ export default function FindYourDockLanding() {
         {/* CTA */}
         <button
           onClick={scrollToQuiz}
-          className="relative z-10 px-8 py-4 text-sm font-mono tracking-widest uppercase transition-all duration-200 active:scale-95"
+          aria-label="Start the vessel quiz to find your waterfront home"
+          className="relative z-10 px-8 py-4 text-sm font-mono tracking-widest uppercase transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2"
           style={{
             background: "#c9a96e",
             color: "#0a0a0a",
             border: "none",
             cursor: "pointer",
+            minHeight: "48px",
           }}
         >
           Find My Dock →
@@ -232,26 +243,87 @@ export default function FindYourDockLanding() {
 
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
       <footer
-        className="px-5 py-10 text-center"
+        className="px-5 py-12 text-center"
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+        role="contentinfo"
       >
-        <p
-          className="font-serif text-base mb-1"
-          style={{ color: "rgba(240,230,208,0.4)" }}
-        >
+        {/* EHO Logo SVG */}
+        <div className="flex justify-center mb-6" aria-label="Equal Housing Opportunity">
+          <svg
+            width="36" height="36" viewBox="0 0 36 36"
+            fill="none" xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true" focusable="false"
+          >
+            {/* House outline */}
+            <path
+              d="M18 5L4 16h3v13h8v-8h6v8h8V16h3L18 5z"
+              stroke="rgba(240,230,208,0.3)" strokeWidth="1.5"
+              fill="none" strokeLinejoin="round"
+            />
+            {/* Equal sign */}
+            <line x1="12" y1="24" x2="24" y2="24"
+              stroke="rgba(240,230,208,0.3)" strokeWidth="1.5" strokeLinecap="round"/>
+            <line x1="12" y1="27.5" x2="24" y2="27.5"
+              stroke="rgba(240,230,208,0.3)" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+        </div>
+
+        {/* Broker info */}
+        <p className="font-serif text-base mb-1"
+          style={{ color: "rgba(240,230,208,0.5)" }}>
+          Benjamin Hoadley
+        </p>
+        <p className="font-mono text-xs tracking-widest uppercase mb-1"
+          style={{ color: "rgba(240,230,208,0.3)" }}>
+          Licensed Real Estate Broker · FL License # BK3222885
+        </p>
+        <p className="font-serif text-sm mb-4"
+          style={{ color: "rgba(240,230,208,0.4)" }}>
           Barefoot Realty &amp; Investments
         </p>
-        <p
-          className="font-mono text-xs tracking-widest uppercase"
-          style={{ color: "rgba(240,230,208,0.2)" }}
-        >
-          Licensed Real Estate Brokerage · South Florida
+
+        {/* Contact */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+          <a
+            href="tel:+15616766659"
+            className="font-mono text-xs tracking-wider transition-colors"
+            style={{ color: "rgba(201,169,110,0.6)" }}
+            aria-label="Call Ben Hoadley at 561-676-6659"
+          >
+            (561) 676-6659
+          </a>
+          <span className="hidden sm:inline"
+            style={{ color: "rgba(240,230,208,0.15)" }}>·</span>
+          <a
+            href="mailto:ben@thehoadleygroup.com"
+            className="font-mono text-xs tracking-wider transition-colors"
+            style={{ color: "rgba(201,169,110,0.6)" }}
+            aria-label="Email Ben Hoadley"
+          >
+            ben@thehoadleygroup.com
+          </a>
+        </div>
+
+        {/* EHO Statement */}
+        <p className="text-xs leading-relaxed max-w-sm mx-auto mb-4"
+          style={{ color: "rgba(240,230,208,0.2)" }}>
+          We are pledged to the letter and spirit of U.S. policy for the
+          achievement of equal housing opportunity throughout the nation.
+          We encourage and support an affirmative advertising and marketing
+          program in which there are no barriers to obtaining housing because
+          of race, color, religion, sex, handicap, familial status, or
+          national origin.
         </p>
-        <p
-          className="font-mono text-xs mt-4"
-          style={{ color: "rgba(240,230,208,0.15)" }}
-        >
-          findyourdock.com · The Hoadley Group
+
+        {/* Fair Housing + Copyright */}
+        <p className="font-mono text-xs mb-1"
+          style={{ color: "rgba(240,230,208,0.15)" }}>
+          Equal Housing Opportunity · All listings subject to availability and change.
+        </p>
+        <p className="font-mono text-xs"
+          style={{ color: "rgba(240,230,208,0.1)" }}>
+          © {new Date().getFullYear()} Barefoot Realty &amp; Investments · The Hoadley Group ·
+          findyourdock.com
         </p>
       </footer>
     </div>
