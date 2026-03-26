@@ -1,0 +1,14 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/dock",
+      "has": [{ "type": "host", "value": "findyourdock.com" }]
+    },
+    {
+      "source": "/",
+      "destination": "/dock",
+      "has": [{ "type": "host", "value": "www.findyourdock.com" }]
+    }
+  ]
+}
