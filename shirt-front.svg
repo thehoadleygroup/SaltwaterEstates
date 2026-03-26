@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&amp;family=Jost:wght@300;400&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Background — remove for print, shirt color is the background -->
+  <rect width="600" height="600" fill="#0a0a0a"/>
+
+  <!-- IT'S -->
+  <text
+    x="300" y="220"
+    font-family="'Cormorant Garamond', 'Georgia', serif"
+    font-size="60"
+    font-weight="300"
+    letter-spacing="10"
+    fill="rgba(240,230,208,0.5)"
+    text-anchor="middle"
+    font-style="italic"
+  >It's</text>
+
+  <!-- DOCK SEASON -->
+  <text
+    x="300" y="320"
+    font-family="'Cormorant Garamond', 'Georgia', serif"
+    font-size="100"
+    font-weight="300"
+    letter-spacing="6"
+    fill="#f0e6d0"
+    text-anchor="middle"
+  >DOCK</text>
+
+  <text
+    x="300" y="410"
+    font-family="'Cormorant Garamond', 'Georgia', serif"
+    font-size="100"
+    font-weight="300"
+    letter-spacing="4"
+    fill="#f0e6d0"
+    text-anchor="middle"
+  >SEASON.</text>
+
+  <!-- Rule line -->
+  <line x1="180" y1="428" x2="420" y2="428" stroke="#c9a96e" stroke-width="1" opacity="0.5"/>
+
+  <!-- URL -->
+  <text
+    x="300" y="460"
+    font-family="'Jost', 'Arial', sans-serif"
+    font-size="18"
+    font-weight="300"
+    letter-spacing="8"
+    fill="#c9a96e"
+    text-anchor="middle"
+  >FINDYOURDOCK.COM</text>
+
+</svg>

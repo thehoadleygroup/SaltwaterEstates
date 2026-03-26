@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FindYourDock Shirt Design — Print Ready</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a1a;
+      font-family: 'Jost', sans-serif;
+      padding: 60px 40px;
+      color: white;
+    }
+
+    .label {
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .shirt-wrap {
+      display: flex;
+      gap: 60px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    /* ── SHIRT SHAPE ─────────────────────────────── */
+    .shirt {
+      width: 380px;
+      min-height: 460px;
+      background: #0a0a0a;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      position: relative;
+    }
+
+    .shirt::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 120px; height: 40px;
+      background: #1a1a1a;
+      border-bottom-left-radius: 60px;
+      border-bottom-right-radius: 60px;
+    }
+
+    /* ── FRONT ───────────────────────────────────── */
+    .front-event {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.7);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .front-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 52px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: #f0e6d0;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .front-rule {
+      width: 80px;
+      height: 1px;
+      background: #c9a96e;
+      opacity: 0.5;
+      margin: 14px auto;
+    }
+
+    .front-url {
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #c9a96e;
+      text-align: center;
+    }
+
+    /* ── BACK ────────────────────────────────────── */
+    .back-qr {
+      margin-bottom: 24px;
+    }
+
+    .back-qr img {
+      width: 160px;
+      height: 160px;
+      display: block;
+      border: 4px solid rgba(201,169,110,0.2);
+      padding: 6px;
+      background: white;
+    }
+
+    .back-tagline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: #f0e6d0;
+      text-align: center;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .back-rule {
+      width: 60px;
+      height: 1px;
+      background: #c9a96e;
+      opacity: 0.4;
+      margin: 10px auto;
+    }
+
+    .back-brokerage {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(240,230,208,0.4);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .back-url {
+      font-family: 'Jost', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.5);
+      text-align: center;
+    }
+
+    /* ── PRINT NOTES ─────────────────────────────── */
+    .notes {
+      max-width: 800px;
+      margin: 50px auto 0;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 28px 32px;
+    }
+
+    .notes h3 {
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #c9a96e;
+      margin-bottom: 16px;
+    }
+
+    .notes ul {
+      list-style: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      color: rgba(240,230,208,0.6);
+      line-height: 2;
+    }
+
+    .notes ul li::before {
+      content: '→  ';
+      color: #c9a96e;
+    }
+
+    /* ── QR DOWNLOAD LINK ────────────────────────── */
+    .qr-link {
+      display: block;
+      text-align: center;
+      margin: 30px auto 0;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c9a96e;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <p class="label" style="margin-bottom:40px;">
+    FindYourDock · Boat Show Shirt Design · Print Ready
+  </p>
+
+  <div class="shirt-wrap">
+
+    <!-- FRONT -->
+    <div>
+      <p class="label">Front</p>
+      <div class="shirt">
+        <h1 class="front-title" style="font-style:italic; font-size:38px; color:rgba(240,230,208,0.5); margin-bottom:0;">It's</h1>
+        <h1 class="front-title">DOCK<br/>SEASON.</h1>
+        <div class="front-rule"></div>
+        <p class="front-url">findyourdock.com</p>
+      </div>
+    </div>
+
+    <!-- BACK -->
+    <div>
+      <p class="label">Back</p>
+      <div class="shirt">
+        <div class="back-qr">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://findyourdock.com&bgcolor=ffffff&color=0a0a0a&margin=10"
+            alt="QR Code — findyourdock.com"
+          />
+        </div>
+        <p class="back-tagline">Your boat deserves a home.</p>
+        <div class="back-rule"></div>
+        <p class="back-brokerage">Brought to you by</p>
+        <p class="back-brokerage" style="color:#c9a96e; letter-spacing:0.2em; white-space:nowrap;">BAREFOOT REALTY &amp; INVESTMENTS</p>
+        <p class="back-url">findyourdock.com</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QR code direct download link -->
+  <a
+    class="qr-link"
+    href="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=https://findyourdock.com&bgcolor=ffffff&color=000000&margin=20"
+    target="_blank"
+  >
+    → Download High-Res QR Code (1000×1000px) for print ←
+  </a>
+
+  <!-- Print notes -->
+  <div class="notes">
+    <h3>Instructions for Printer</h3>
+    <ul>
+      <li>Shirt color: Black or deep navy</li>
+      <li>Front print: White + gold (#c9a96e) — center chest, approx 10" wide</li>
+      <li>Back print: White + gold — center back, QR code approx 4"×4", text below</li>
+      <li>Print method: DTG (Direct to Garment) or screen print</li>
+      <li>QR code must print in solid black on white background for reliable scanning</li>
+      <li>Download the high-res QR code link above for the print file</li>
+      <li>Font: Cormorant Garamond (serif) for "Find Your Dock" — provide as outlined paths if needed</li>
+    </ul>
+  </div>
+
+</body>
+</html>

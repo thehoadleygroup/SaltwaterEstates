@@ -102,12 +102,6 @@ export default function FindYourDockLanding() {
         {/* Logo wordmark */}
         <div className="mb-10 relative z-10">
           <p
-            className="font-mono uppercase tracking-[0.25em] text-sm mb-1"
-            style={{ color: "rgba(240,230,208,0.5)" }}
-          >
-            Palm Beach International Boat Show · 2026
-          </p>
-          <p
             className="font-mono uppercase tracking-[0.2em] text-xs mb-3"
             style={{ color: "#c9a96e" }}
           >
