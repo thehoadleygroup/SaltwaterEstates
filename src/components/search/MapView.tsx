@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import { Listing } from "@/types/listing";
@@ -14,12 +14,21 @@ interface Props {
 
 const SOUTH_FL_CENTER: [number, number] = [-80.08, 26.58];
 
-export default function MapView({ listings, activeListing, onListingClick }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<maptilersdk.Map | null>(null);
-  const markersRef = useRef<Map<string, maptilersdk.Marker>>(new Map());
+// ── NAUTICAL LAYER IDs ────────────────────────────────────────────────────────
+const SEAMARK_SOURCE  = "openseamap-source";
+const SEAMARK_LAYER   = "openseamap-layer";
+const NOAA_SOURCE     = "noaa-rnc-source";
+const NOAA_LAYER      = "noaa-rnc-layer";
 
-  // Initialize map
+export default function MapView({ listings, activeListing, onListingClick }: Props) {
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const mapRef        = useRef<maptilersdk.Map | null>(null);
+  const markersRef    = useRef<Map<string, maptilersdk.Marker>>(new Map());
+  const [nautical, setNautical]       = useState(false);
+  const [mapReady, setMapReady]       = useState(false);
+  const [layerError, setLayerError]   = useState(false);
+
+  // ── INIT MAP ────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
@@ -42,20 +51,88 @@ export default function MapView({ listings, activeListing, onListingClick }: Pro
       "bottom-right"
     );
 
-    mapRef.current = map;
+    map.on("load", () => setMapReady(true));
 
+    mapRef.current = map;
     return () => {
       map.remove();
       mapRef.current = null;
+      setMapReady(false);
     };
   }, []);
 
-  // Build / update markers when listings change
+  // ── NAUTICAL OVERLAY TOGGLE ─────────────────────────────────────────────────
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+
+    if (nautical) {
+      setLayerError(false);
+      try {
+        // ── NOAA Raster Nautical Charts (RNC) — public domain ─────────────
+        if (!map.getSource(NOAA_SOURCE)) {
+          map.addSource(NOAA_SOURCE, {
+            type: "raster",
+            tiles: [
+              "https://tileservice.charts.noaa.gov/tiles/50000_1/{z}/{x}/{y}.png",
+            ],
+            tileSize: 256,
+            attribution: "NOAA Office of Coast Survey",
+            minzoom: 4,
+            maxzoom: 16,
+          });
+        }
+        if (!map.getLayer(NOAA_LAYER)) {
+          map.addLayer({
+            id: NOAA_LAYER,
+            type: "raster",
+            source: NOAA_SOURCE,
+            paint: { "raster-opacity": 0.72 },
+          });
+        }
+
+        // ── OpenSeaMap Seamark overlay — navigation marks, buoys, lights ──
+        if (!map.getSource(SEAMARK_SOURCE)) {
+          map.addSource(SEAMARK_SOURCE, {
+            type: "raster",
+            tiles: [
+              "https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png",
+            ],
+            tileSize: 256,
+            attribution: "© OpenSeaMap contributors",
+            minzoom: 9,
+            maxzoom: 18,
+          });
+        }
+        if (!map.getLayer(SEAMARK_LAYER)) {
+          map.addLayer({
+            id: SEAMARK_LAYER,
+            type: "raster",
+            source: SEAMARK_SOURCE,
+            paint: { "raster-opacity": 0.95 },
+          });
+        }
+      } catch (err) {
+        console.warn("Nautical layer error:", err);
+        setLayerError(true);
+        setNautical(false);
+      }
+    } else {
+      // ── Remove layers cleanly ────────────────────────────────────────────
+      [SEAMARK_LAYER, NOAA_LAYER].forEach((id) => {
+        if (map.getLayer(id)) map.removeLayer(id);
+      });
+      [SEAMARK_SOURCE, NOAA_SOURCE].forEach((id) => {
+        if (map.getSource(id)) map.removeSource(id);
+      });
+    }
+  }, [nautical, mapReady]);
+
+  // ── MARKERS ──────────────────────────────────────────────────────────────────
   const buildMarkers = useCallback(() => {
     const map = mapRef.current;
     if (!map) return;
 
-    // Remove markers no longer in results
     const newIds = new Set(listings.map((l) => l.id));
     markersRef.current.forEach((marker, id) => {
       if (!newIds.has(id)) {
@@ -117,7 +194,7 @@ export default function MapView({ listings, activeListing, onListingClick }: Pro
     }
   }, [buildMarkers]);
 
-  // Highlight active marker + fly to it
+  // ── ACTIVE LISTING HIGHLIGHT + FLY TO ────────────────────────────────────────
   useEffect(() => {
     markersRef.current.forEach((marker, id) => {
       const el = marker.getElement();
@@ -155,31 +232,92 @@ export default function MapView({ listings, activeListing, onListingClick }: Pro
     }
   }, [activeListing, listings]);
 
+  // ── RENDER ───────────────────────────────────────────────────────────────────
   return (
     <div style={{ flex: 1, position: "relative" }}>
       <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
 
-      {/* Nautical overlay toggle — Phase 2 */}
-      <div
+      {/* ── NAUTICAL TOGGLE ─────────────────────────────────────────────── */}
+      <button
+        onClick={() => setNautical((v) => !v)}
+        disabled={!mapReady}
+        aria-label={nautical ? "Disable nautical chart overlay" : "Enable nautical chart overlay"}
+        aria-pressed={nautical}
         style={{
           position: "absolute",
           top: "16px",
           left: "16px",
           padding: "8px 14px",
-          background: "rgba(10,10,10,0.85)",
-          border: "1px solid rgba(201,169,110,0.2)",
-          color: "rgba(240,230,208,0.4)",
+          background: nautical ? "#c9a96e" : "rgba(10,10,10,0.88)",
+          border: `1px solid ${nautical ? "#c9a96e" : "rgba(201,169,110,0.35)"}`,
+          color: nautical ? "#0a0a0a" : "rgba(240,230,208,0.7)",
           fontSize: "10px",
           letterSpacing: "0.2em",
           textTransform: "uppercase",
           fontFamily: "monospace",
           backdropFilter: "blur(4px)",
+          cursor: mapReady ? "pointer" : "default",
+          transition: "all 0.2s",
+          display: "flex",
+          alignItems: "center",
+          gap: "7px",
+          opacity: mapReady ? 1 : 0.4,
         }}
       >
-        ⚓ Nautical Overlay — Coming Soon
-      </div>
+        <span style={{ fontSize: "13px" }}>⚓</span>
+        {nautical ? "Nautical On" : "Nautical Chart"}
+      </button>
 
-      {/* No results */}
+      {/* ── NAUTICAL LEGEND ─────────────────────────────────────────────── */}
+      {nautical && !layerError && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "48px",
+            left: "16px",
+            padding: "10px 14px",
+            background: "rgba(10,10,10,0.88)",
+            border: "1px solid rgba(201,169,110,0.2)",
+            backdropFilter: "blur(4px)",
+            fontSize: "10px",
+            fontFamily: "monospace",
+            letterSpacing: "0.12em",
+            lineHeight: "1.8",
+          }}
+        >
+          <p style={{ color: "#c9a96e", marginBottom: "4px", letterSpacing: "0.2em" }}>
+            CHART DATA
+          </p>
+          <p style={{ color: "rgba(240,230,208,0.5)" }}>NOAA Raster Nautical Charts</p>
+          <p style={{ color: "rgba(240,230,208,0.5)" }}>OpenSeaMap Navigation Marks</p>
+          <p style={{ color: "rgba(240,230,208,0.3)", marginTop: "6px", fontSize: "9px" }}>
+            Depths · Channels · Buoys · Hazards
+          </p>
+        </div>
+      )}
+
+      {/* ── LAYER ERROR NOTICE ───────────────────────────────────────────── */}
+      {layerError && (
+        <div
+          style={{
+            position: "absolute",
+            top: "52px",
+            left: "16px",
+            padding: "8px 14px",
+            background: "rgba(10,10,10,0.88)",
+            border: "1px solid rgba(201,169,110,0.15)",
+            color: "rgba(240,230,208,0.4)",
+            fontSize: "10px",
+            fontFamily: "monospace",
+            letterSpacing: "0.15em",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          Chart tiles unavailable — try again
+        </div>
+      )}
+
+      {/* ── NO RESULTS ───────────────────────────────────────────────────── */}
       {listings.length === 0 && (
         <div
           style={{
@@ -201,23 +339,10 @@ export default function MapView({ listings, activeListing, onListingClick }: Pro
             }}
           >
             <div style={{ fontSize: "2rem", marginBottom: "12px" }}>⚓</div>
-            <p
-              style={{
-                color: "#f0e6d0",
-                fontFamily: "Georgia, serif",
-                fontSize: "1.1rem",
-                marginBottom: "8px",
-              }}
-            >
+            <p style={{ color: "#f0e6d0", fontFamily: "Georgia, serif", fontSize: "1.1rem", marginBottom: "8px" }}>
               No properties match your vessel profile.
             </p>
-            <p
-              style={{
-                color: "rgba(240,230,208,0.4)",
-                fontSize: "0.8rem",
-                fontFamily: "monospace",
-              }}
-            >
+            <p style={{ color: "rgba(240,230,208,0.4)", fontSize: "0.8rem", fontFamily: "monospace" }}>
               Try adjusting your filters.
             </p>
           </div>
